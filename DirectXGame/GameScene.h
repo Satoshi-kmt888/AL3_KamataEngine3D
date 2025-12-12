@@ -5,6 +5,7 @@
 // ゲームシーン
 class GameScene {
 
+private:
 public:
 	// 初期化
 	void Initialize();
