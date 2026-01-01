@@ -1,9 +1,13 @@
 #pragma once
 
+#include <vector>
+
 #include "KamataEngine.h"
 #include "Player.h"
 
-// ゲームシーン
+/// <summary>
+/// ゲームシーン
+/// </summary>
 class GameScene {
 
 public:
@@ -14,17 +18,44 @@ public:
 	~GameScene();
 
 private:
-	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
-
-	// 3Dモデル
-	KamataEngine::Model* model_ = nullptr;
-
+	/*
+	カメラ
+	--------------------*/
 	// カメラ
 	KamataEngine::Camera camera_;
 
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+
+	// デバッグカメラ有効フラグ
+	bool isDebugCameraActive_ = false;
+
+	/*
+	ブロック
+	--------------------*/
+
+	// 3Dモデル
+	KamataEngine::Model* modelBlock_ = nullptr;
+
+	// ワールド変換データ
+	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
+
+	/*
+	プレイヤー
+	--------------------*/
+
+	// 3Dモデル
+	//KamataEngine::Model* modelPlayer_ = nullptr;
+
 	// プレイヤー
-	Player* player_ = nullptr;
+	// Player* player_ = nullptr;
+
+	/*
+	リソース
+	--------------------*/
+
+	// テクスチャハンドル
+	uint32_t textureHandle_ = 0;
 
 public:
 	// 初期化
