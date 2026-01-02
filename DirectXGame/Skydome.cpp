@@ -1,14 +1,17 @@
 #include <cassert>
 
-#include "Player.h"
+#include "Skydome.h"
 #include "WorldTransformUpdate.h"
 
 using namespace KamataEngine;
 
 /// <summary>
-/// 初期化
+///
 /// </summary>
-void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera) {
+/// <param name="model">モデル</param>
+/// <param name="textureHandle">テクスチャハンドル</param>
+/// <param name="camera">カメラ</param>
+void Skydome::Initialize(Model* model, uint32_t textureHandle, Camera* camera) {
 
 	// NULLポインタチェック
 	assert(model);
@@ -19,14 +22,13 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera) {
 	camera_ = camera;
 
 	// ワールド変換の初期化
-	worldTransform_.translation_.x = -1.0f;
 	worldTransform_.Initialize();
 }
 
 /// <summary>
 /// 更新
 /// </summary>
-void Player::Update() {
+void Skydome::Update() {
 
 	// 行列を定数バッファに転送
 	WorldTransformUpdate(worldTransform_);
@@ -35,8 +37,8 @@ void Player::Update() {
 /// <summary>
 /// 描画
 /// </summary>
-void Player::Draw() {
+void Skydome::Draw() {
 
 	// 3Dモデルを描画
-	model_->Draw(worldTransform_, *camera_, textureHandle_);
+	model_->Draw(worldTransform_, *camera_);
 }

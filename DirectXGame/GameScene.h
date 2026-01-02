@@ -3,6 +3,7 @@
 #include <vector>
 
 #include "KamataEngine.h"
+#include "Skydome.h"
 #include "Player.h"
 
 /// <summary>
@@ -18,9 +19,11 @@ public:
 	~GameScene();
 
 private:
-	/*
-	カメラ
-	--------------------*/
+
+	//==================================================
+	//　　　　　　　　　　　　　カメラ
+	//==================================================
+	
 	// カメラ
 	KamataEngine::Camera camera_;
 
@@ -30,9 +33,22 @@ private:
 	// デバッグカメラ有効フラグ
 	bool isDebugCameraActive_ = false;
 
-	/*
-	ブロック
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　天球
+	//==================================================
+
+	//天球
+	Skydome* skydome_ = nullptr;
+
+	//3Dモデル
+	KamataEngine::Model* modelSkydome_ = nullptr;
+
+	//テクスチャハンドル
+	uint32_t textureHandleSkydome_ = 0;
+
+	//==================================================
+	// 　　　　　　　　　　　　ブロック
+	//==================================================
 
 	// 3Dモデル
 	KamataEngine::Model* modelBlock_ = nullptr;
@@ -40,22 +56,21 @@ private:
 	// ワールド変換データ
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
-	/*
-	プレイヤー
-	--------------------*/
+	//テクスチャハンドル
+	uint32_t textureHandleWoodBox_ = 0;
 
-	// 3Dモデル
-	//KamataEngine::Model* modelPlayer_ = nullptr;
+	//==================================================
+	// 　　　　　　　　　　　　プレイヤー
+	//==================================================
 
 	// プレイヤー
-	// Player* player_ = nullptr;
+	Player* player_ = nullptr;
 
-	/*
-	リソース
-	--------------------*/
+	// 3Dモデル
+	KamataEngine::Model* modelPlayer_ = nullptr;
 
 	// テクスチャハンドル
-	uint32_t textureHandle_ = 0;
+	uint32_t textureHandlePlayer_ = 0;
 
 public:
 	// 初期化

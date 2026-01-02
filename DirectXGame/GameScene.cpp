@@ -17,7 +17,18 @@ GameScene::~GameScene() {
 	カメラ
 	--------------------*/
 
+	// デバッグカメラ
 	delete debugCamera_;
+
+	/*
+	天球
+	--------------------*/
+
+	// 天球
+	delete skydome_;
+
+	// モデルデータの開放
+	delete modelSkydome_;
 
 	/*
 	ブロック
@@ -51,22 +62,42 @@ GameScene::~GameScene() {
 /// </summary>
 void GameScene::Initialize() {
 
-	/*
-	カメラ
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　カメラ
+	//==================================================
 
 	// カメラの初期化
+	camera_.farZ = 1600.0f;
 	camera_.Initialize();
 
 	// デバッグカメラの生成
 	debugCamera_ = new DebugCamera(1280, 720);
 
-	/*
-	ブロック
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　天球
+	//==================================================
+
+	// 天球の生成
+	skydome_ = new Skydome();
+
+	// モデルの生成
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
+
+	// テクスチャハンドル
+	textureHandleSkydome_ = TextureManager::Load("./Resources/skydome/skydome.jpg");
+
+	// 天球の初期化
+	skydome_->Initialize(modelSkydome_, textureHandleSkydome_, &camera_);
+
+	//==================================================
+	// 　　　　　　　　　　　ブロック
+	//==================================================
 
 	// 3Dモデルデータの生成
-	modelBlock_ = Model::Create();
+	modelBlock_ = Model::CreateFromOBJ("woodBox", true);
+
+	// テクスチャハンドル
+	textureHandleWoodBox_ = TextureManager::Load("./Resources/woodBox/woodBox.png");
 
 	// 要素数
 	const uint32_t kNumBlockHorizontal = 10;
@@ -86,16 +117,23 @@ void GameScene::Initialize() {
 		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
 	}
 
-	// キューブの生成
+	// ブロックの生成
 	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
 		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
+
+			// ブロックの生成
 			worldTransformBlocks_[i][j] = new WorldTransform();
+
+			// ブロックの初期化
 			worldTransformBlocks_[i][j]->Initialize();
+
+			// ブロックの配置座標
 			worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * i;
 			worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * j;
 		}
 	}
 
+	// 穴あき許容のチェック
 	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
 		for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
 			worldTransformBlocks_[i][j] = nullptr;
@@ -104,25 +142,21 @@ void GameScene::Initialize() {
 		i++;
 	}
 
-	/*
-	プレイヤー
-	--------------------*/
-
-	// 3Dモデルデータの生成
-	// modelPlayer_ = Model::Create();
+	//==================================================
+	// 　　　　　　　　　　　プレイヤー
+	//==================================================
 
 	// プレイヤーの生成
-	// player_ = new Player();
+	player_ = new Player();
 
-	// プレイヤーの初期化
-	// player_->Initialize(modelPlayer_, textureHandle_, &camera_);
-
-	/*
-	リソース
-	--------------------*/
+	// 3Dモデルデータの生成
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
 
 	// ファイル名を指定してテクスチャを読み込む
-	textureHandle_ = TextureManager::Load("./Resources/cube/cube.jpg");
+	textureHandlePlayer_ = TextureManager::Load("./Resources/player/player.png");
+
+	// プレイヤーの初期化
+	player_->Initialize(modelPlayer_, textureHandlePlayer_, &camera_);
 }
 
 /// <summary>
@@ -130,9 +164,9 @@ void GameScene::Initialize() {
 /// </summary>
 void GameScene::Update() {
 
-	/*
-	カメラ
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　カメラ
+	//==================================================
 
 #ifdef _DEBUG
 
@@ -170,9 +204,16 @@ void GameScene::Update() {
 		camera_.UpdateMatrix();
 	}
 
-	/*
-	ブロック
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　天球
+	//==================================================
+
+	// 天球の更新
+	skydome_->Update();
+
+	//==================================================
+	// 　　　　　　　　　　　ブロック
+	//==================================================
 
 	// ブロックの更新
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -194,12 +235,12 @@ void GameScene::Update() {
 		}
 	}
 
-	/*
-	プレイヤー
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　プレイヤー
+	//==================================================
 
 	// プレイヤーの更新
-	// player_->Update();
+	player_->Update();
 }
 
 /// <summary>
@@ -210,9 +251,16 @@ void GameScene::Draw() {
 	// 3Dモデル描画前処理
 	Model::PreDraw();
 
-	/*
-	ブロック
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　　天球
+	//==================================================
+
+	// 天球の描画
+	skydome_->Draw();
+
+	//==================================================
+	// 　　　　　　　　　　　　ブロック
+	//==================================================
 
 	// ブロックの描画
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
@@ -224,16 +272,16 @@ void GameScene::Draw() {
 			}
 
 			// 3Dモデルを描画
-			modelBlock_->Draw(*worldTransformBlock, camera_);
+			modelBlock_->Draw(*worldTransformBlock, camera_, textureHandleWoodBox_);
 		}
 	}
 
-	/*
-	プレイヤー
-	--------------------*/
+	//==================================================
+	// 　　　　　　　　　　　プレイヤー
+	//==================================================
 
 	// プレイヤーの描画
-	// player_->Draw();
+	player_->Draw();
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
