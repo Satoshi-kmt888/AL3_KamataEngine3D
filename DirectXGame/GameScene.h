@@ -3,9 +3,9 @@
 #include <vector>
 
 #include "KamataEngine.h"
-#include "Skydome.h"
 #include "MapChipField.h"
 #include "Player.h"
+#include "Skydome.h"
 
 /// <summary>
 /// ゲームシーン
@@ -20,11 +20,10 @@ public:
 	~GameScene();
 
 private:
+	//==================================================
+	// 　　　　　　　　　　　　　カメラ
+	//==================================================
 
-	//==================================================
-	//　　　　　　　　　　　　　カメラ
-	//==================================================
-	
 	// カメラ
 	KamataEngine::Camera camera_;
 
@@ -38,37 +37,37 @@ private:
 	// 　　　　　　　　　　　　天球
 	//==================================================
 
-	//天球
+	// 天球
 	Skydome* skydome_ = nullptr;
 
-	//3Dモデル
-	KamataEngine::Model* modelSkydome_ = nullptr;
-
-	//テクスチャハンドル
+	// テクスチャハンドル
 	uint32_t textureHandleSkydome_ = 0;
+
+	// 3Dモデル
+	KamataEngine::Model* modelSkydome_ = nullptr;
 
 	//==================================================
 	// 　　　　　　　　　　　マップチップ
 	//==================================================
 
-	//マップチップフィールド
+	// マップチップフィールド
 	MapChipField* mapChipField_;
 
-	//表示ブロックの生成
+	// 表示ブロックの生成
 	void GenerateBlocks();
 
 	//==================================================
 	// 　　　　　　　　　　　　ブロック
 	//==================================================
 
-	// 3Dモデル
-	KamataEngine::Model* modelBlock_ = nullptr;
-
 	// ワールド変換データ
 	std::vector<std::vector<KamataEngine::WorldTransform*>> worldTransformBlocks_;
 
-	//テクスチャハンドル
+	// テクスチャハンドル
 	uint32_t textureHandleWoodBox_ = 0;
+
+	// 3Dモデル
+	KamataEngine::Model* modelBlock_ = nullptr;
 
 	//==================================================
 	// 　　　　　　　　　　　　プレイヤー
@@ -77,11 +76,11 @@ private:
 	// プレイヤー
 	Player* player_ = nullptr;
 
-	// 3Dモデル
-	KamataEngine::Model* modelPlayer_ = nullptr;
-
 	// テクスチャハンドル
 	uint32_t textureHandlePlayer_ = 0;
+
+	// 3Dモデル
+	KamataEngine::Model* modelPlayer_ = nullptr;
 
 public:
 	// 初期化

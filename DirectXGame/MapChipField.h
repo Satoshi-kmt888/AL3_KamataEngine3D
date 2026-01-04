@@ -34,6 +34,7 @@ private:
 	MapChipData mapChipData_;
 
 public:
+	// 要素数の取得
 	uint32_t GetNumBlockHorizontal() { return kNumBlockHorizontal; }
 	uint32_t GetNumBlockVirtical() { return kNumBlockVirtical; }
 
@@ -46,7 +47,7 @@ public:
 	/// <summary>
 	/// マップの読み込み
 	/// </summary>
-	/// <param name="filePath"></param>
+	/// <param name="filePath">ファイルの場所</param>
 	void LoadMapChipCsv(const std::string& filePath);
 
 	/// <summary>

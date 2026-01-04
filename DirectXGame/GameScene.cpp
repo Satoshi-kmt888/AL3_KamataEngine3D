@@ -42,9 +42,6 @@ GameScene::~GameScene() {
 	ブロック
 	--------------------*/
 
-	// モデルデータの開放
-	delete modelBlock_;
-
 	// ワールド変換データの開放
 	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
 		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
@@ -53,6 +50,9 @@ GameScene::~GameScene() {
 	}
 
 	worldTransformBlocks_.clear();
+
+	// モデルデータの開放
+	delete modelBlock_;
 
 	/*
 	プレイヤー
@@ -88,11 +88,11 @@ void GameScene::Initialize() {
 	// 天球の生成
 	skydome_ = new Skydome();
 
-	// モデルの生成
-	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
-
 	// テクスチャハンドル
 	textureHandleSkydome_ = TextureManager::Load("./Resources/skydome/skydome.jpg");
+
+	// モデルの生成
+	modelSkydome_ = Model::CreateFromOBJ("skydome", true);
 
 	// 天球の初期化
 	skydome_->Initialize(modelSkydome_, textureHandleSkydome_, &camera_);
@@ -107,17 +107,18 @@ void GameScene::Initialize() {
 	// ファイル読み込み
 	mapChipField_->LoadMapChipCsv("Resources/map.csv");
 
+	// 表示ブロックの生成
 	GenerateBlocks();
 
 	//==================================================
 	// 　　　　　　　　　　　ブロック
 	//==================================================
 
-	// 3Dモデルデータの生成
-	modelBlock_ = Model::CreateFromOBJ("woodBox", true);
-
 	// テクスチャハンドル
 	textureHandleWoodBox_ = TextureManager::Load("./Resources/woodBox/woodBox.png");
+
+	// 3Dモデルデータの生成
+	modelBlock_ = Model::CreateFromOBJ("woodBox", true);
 
 	//==================================================
 	// 　　　　　　　　　　　プレイヤー
@@ -126,14 +127,17 @@ void GameScene::Initialize() {
 	// プレイヤーの生成
 	player_ = new Player();
 
-	// 3Dモデルデータの生成
-	modelPlayer_ = Model::CreateFromOBJ("player", true);
+	// 座標をマップチップ番号で指定
+	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
 	// ファイル名を指定してテクスチャを読み込む
 	textureHandlePlayer_ = TextureManager::Load("./Resources/player/player.png");
 
+	// 3Dモデルデータの生成
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+
 	// プレイヤーの初期化
-	player_->Initialize(modelPlayer_, textureHandlePlayer_, &camera_);
+	player_->Initialize(modelPlayer_, textureHandlePlayer_, &camera_, playerPosition);
 }
 
 /// <summary>
@@ -259,7 +263,7 @@ void GameScene::Draw() {
 }
 
 /// <summary>
-///
+/// 　表示ブロックの生成
 /// </summary>
 void GameScene::GenerateBlocks() {
 
