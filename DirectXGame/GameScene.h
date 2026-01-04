@@ -4,6 +4,7 @@
 
 #include "KamataEngine.h"
 #include "Skydome.h"
+#include "MapChipField.h"
 #include "Player.h"
 
 /// <summary>
@@ -45,6 +46,16 @@ private:
 
 	//テクスチャハンドル
 	uint32_t textureHandleSkydome_ = 0;
+
+	//==================================================
+	// 　　　　　　　　　　　マップチップ
+	//==================================================
+
+	//マップチップフィールド
+	MapChipField* mapChipField_;
+
+	//表示ブロックの生成
+	void GenerateBlocks();
 
 	//==================================================
 	// 　　　　　　　　　　　　ブロック

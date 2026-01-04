@@ -1,5 +1,6 @@
 #include "GameScene.h"
 #include "MakeMatrix.h"
+#include "WorldTransformUpdate.h"
 
 using namespace KamataEngine;
 
@@ -31,6 +32,13 @@ GameScene::~GameScene() {
 	delete modelSkydome_;
 
 	/*
+	マップチップ
+	--------------------*/
+
+	// マップチップフィールドの開放
+	delete mapChipField_;
+
+	/*
 	ブロック
 	--------------------*/
 
@@ -51,10 +59,10 @@ GameScene::~GameScene() {
 	--------------------*/
 
 	// プレイヤーの開放
-	// delete player_;
+	delete player_;
 
 	// モデルデータの開放
-	// delete modelPlayer_;
+	delete modelPlayer_;
 }
 
 /// <summary>
@@ -90,6 +98,18 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkydome_, textureHandleSkydome_, &camera_);
 
 	//==================================================
+	// 　　　　　　　　　　　マップチップ
+	//==================================================
+
+	// インスタンスの生成
+	mapChipField_ = new MapChipField();
+
+	// ファイル読み込み
+	mapChipField_->LoadMapChipCsv("Resources/map.csv");
+
+	GenerateBlocks();
+
+	//==================================================
 	// 　　　　　　　　　　　ブロック
 	//==================================================
 
@@ -98,49 +118,6 @@ void GameScene::Initialize() {
 
 	// テクスチャハンドル
 	textureHandleWoodBox_ = TextureManager::Load("./Resources/woodBox/woodBox.png");
-
-	// 要素数
-	const uint32_t kNumBlockHorizontal = 10;
-	const uint32_t kNumBlockVirtical = 20;
-
-	// ブロック1個分の横幅
-	const float kBlockWidth = 2.0f;
-	const float kBlockHeight = 2.0f;
-
-	// 要素数を変更する
-	worldTransformBlocks_.resize(kNumBlockVirtical);
-
-	// 列数を設定
-	for (int i = 0; i < kNumBlockVirtical; i++) {
-
-		// 1列の要素数を設定(横方向のブロック数)
-		worldTransformBlocks_[i].resize(kNumBlockHorizontal);
-	}
-
-	// ブロックの生成
-	for (uint32_t i = 0; i < kNumBlockVirtical; ++i) {
-		for (uint32_t j = 0; j < kNumBlockHorizontal; ++j) {
-
-			// ブロックの生成
-			worldTransformBlocks_[i][j] = new WorldTransform();
-
-			// ブロックの初期化
-			worldTransformBlocks_[i][j]->Initialize();
-
-			// ブロックの配置座標
-			worldTransformBlocks_[i][j]->translation_.x = kBlockWidth * i;
-			worldTransformBlocks_[i][j]->translation_.y = kBlockHeight * j;
-		}
-	}
-
-	// 穴あき許容のチェック
-	for (uint32_t i = 0; i < kNumBlockVirtical; i++) {
-		for (uint32_t j = 0; j < kNumBlockHorizontal; j++) {
-			worldTransformBlocks_[i][j] = nullptr;
-			j++;
-		}
-		i++;
-	}
 
 	//==================================================
 	// 　　　　　　　　　　　プレイヤー
@@ -224,14 +201,8 @@ void GameScene::Update() {
 				continue;
 			}
 
-			// アフィン変換行列の作成
-			Matrix4x4 worldMatrix = MakeAffineMatrix(worldTransformBlock->scale_, worldTransformBlock->rotation_, worldTransformBlock->translation_);
-
-			// ワールド行列
-			worldTransformBlock->matWorld_ = worldMatrix;
-
-			// 定数バッファに転送する
-			worldTransformBlock->TransferMatrix();
+			// ワールド行列の更新
+			WorldTransformUpdate(*worldTransformBlock);
 		}
 	}
 
@@ -285,4 +256,40 @@ void GameScene::Draw() {
 
 	// 3Dモデル描画後処理
 	Model::PostDraw();
+}
+
+/// <summary>
+///
+/// </summary>
+void GameScene::GenerateBlocks() {
+
+	// 要素数
+	uint32_t numBlockHorizontal = mapChipField_->GetNumBlockHorizontal();
+	uint32_t numBlockVirtical = mapChipField_->GetNumBlockVirtical();
+
+	// 要素数を変更する
+	worldTransformBlocks_.resize(numBlockVirtical);
+
+	// 列数を設定
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+
+		// 1列の要素数を設定(横方向のブロック数)
+		worldTransformBlocks_[i].resize(numBlockHorizontal);
+	}
+
+	// ブロックの生成
+	for (uint32_t i = 0; i < numBlockVirtical; ++i) {
+		for (uint32_t j = 0; j < numBlockHorizontal; ++j) {
+			if (mapChipField_->GetMapChipTypeByIndex(j, i) == MapChipType::kBlock) {
+				WorldTransform* worldTransform = new WorldTransform();
+
+				// ブロックの初期化
+				worldTransform->Initialize();
+
+				// ブロックの配置座標
+				worldTransformBlocks_[i][j] = worldTransform;
+				worldTransformBlocks_[i][j]->translation_ = mapChipField_->GetMapChipPositionByIndex(j, i);
+			}
+		}
+	}
 }

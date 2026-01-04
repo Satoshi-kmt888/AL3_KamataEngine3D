@@ -19,7 +19,8 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera) {
 	camera_ = camera;
 
 	// ワールド変換の初期化
-	worldTransform_.translation_.x = -1.0f;
+	worldTransform_.translation_.x = 2.0f;
+	worldTransform_.translation_.y = 2.0f;
 	worldTransform_.Initialize();
 }
 
