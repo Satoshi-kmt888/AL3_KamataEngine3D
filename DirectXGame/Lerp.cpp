@@ -9,7 +9,4 @@ using namespace KamataEngine;
 /// <param name="b">終了値</param>
 /// <param name="t">時間</param>
 /// <returns></returns>
-float Lerp(float a, float b, float t) {
-
-	return t * a + (1.0f - t) * b;
-}
+float Lerp(float a, float b, float t) { return t * a + (1.0f - t) * b; }

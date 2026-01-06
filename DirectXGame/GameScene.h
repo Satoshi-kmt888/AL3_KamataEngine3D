@@ -6,6 +6,7 @@
 #include "MapChipField.h"
 #include "Player.h"
 #include "Skydome.h"
+#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -20,18 +21,6 @@ public:
 	~GameScene();
 
 private:
-	//==================================================
-	// 　　　　　　　　　　　　　カメラ
-	//==================================================
-
-	// カメラ
-	KamataEngine::Camera camera_;
-
-	// デバッグカメラ
-	KamataEngine::DebugCamera* debugCamera_ = nullptr;
-
-	// デバッグカメラ有効フラグ
-	bool isDebugCameraActive_ = false;
 
 	//==================================================
 	// 　　　　　　　　　　　　天球
@@ -81,6 +70,22 @@ private:
 
 	// 3Dモデル
 	KamataEngine::Model* modelPlayer_ = nullptr;
+
+	//==================================================
+	// 　　　　　　　　　　　　　カメラ
+	//==================================================
+
+	// カメラ
+	KamataEngine::Camera camera_;
+
+	// デバッグカメラ
+	KamataEngine::DebugCamera* debugCamera_ = nullptr;
+
+	// デバッグカメラ有効フラグ
+	bool isDebugCameraActive_ = false;
+
+	// カメラコントローラ
+	CameraController* cameraController_ = nullptr;
 
 public:
 	// 初期化

@@ -71,21 +71,10 @@ GameScene::~GameScene() {
 void GameScene::Initialize() {
 
 	//==================================================
-	// 　　　　　　　　　　　　カメラ
-	//==================================================
-
-	// カメラの初期化
-	camera_.farZ = 1600.0f;
-	camera_.Initialize();
-
-	// デバッグカメラの生成
-	debugCamera_ = new DebugCamera(1280, 720);
-
-	//==================================================
 	// 　　　　　　　　　　　　天球
 	//==================================================
 
-	// 天球の生成
+	// インスタンスの生成
 	skydome_ = new Skydome();
 
 	// テクスチャハンドル
@@ -138,6 +127,33 @@ void GameScene::Initialize() {
 
 	// プレイヤーの初期化
 	player_->Initialize(modelPlayer_, textureHandlePlayer_, &camera_, playerPosition);
+
+	//==================================================
+	// 　　　　　　　　　　カメラコントローラ
+	//==================================================
+
+	// カメラコントローラのインスタンス生成
+	cameraController_ = new CameraController();
+
+	// 初期化
+	cameraController_->Initialize(&camera_);
+
+	// 追従対象をセット
+	cameraController_->SetTarget(player_);
+
+	// リセット
+	cameraController_->Reset();
+
+	//==================================================
+	// 　　　　　　　　　　　　カメラ
+	//==================================================
+
+	// カメラの初期化
+	camera_.farZ = 1600.0f;
+	camera_.Initialize();
+
+	// デバッグカメラのインスタンス生成
+	debugCamera_ = new DebugCamera(1280, 720);
 }
 
 /// <summary>
@@ -146,9 +162,48 @@ void GameScene::Initialize() {
 void GameScene::Update() {
 
 	//==================================================
-	// 　　　　　　　　　　　　カメラ
+	// 　　　　　　　　　　　　天球
 	//==================================================
 
+	// 天球の更新
+	skydome_->Update();
+
+	//==================================================
+	// 　　　　　　　　　　　ブロック
+	//==================================================
+
+	// ブロックの更新
+	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
+		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
+
+			// worldTransformBlockがnullptrだったらスキップ
+			if (!worldTransformBlock) {
+				continue;
+			}
+
+			// ワールド行列の更新
+			WorldTransformUpdate(*worldTransformBlock);
+		}
+	}
+
+	//==================================================
+	// 　　　　　　　　　　　プレイヤー
+	//==================================================
+
+	// プレイヤーの更新
+	player_->Update();
+
+	//==================================================
+	// 　　　　　　　　　　カメラコントローラ
+	//==================================================
+
+	// カメラコントローラの更新
+	cameraController_->Update();
+
+	//==================================================
+	// 　　　　　　　　　　　　カメラ
+	//==================================================
+	
 #ifdef _DEBUG
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {
@@ -184,38 +239,6 @@ void GameScene::Update() {
 		// ビュープロジェクション行列の更新と転送
 		camera_.UpdateMatrix();
 	}
-
-	//==================================================
-	// 　　　　　　　　　　　　天球
-	//==================================================
-
-	// 天球の更新
-	skydome_->Update();
-
-	//==================================================
-	// 　　　　　　　　　　　ブロック
-	//==================================================
-
-	// ブロックの更新
-	for (std::vector<WorldTransform*>& worldTransformBlockLine : worldTransformBlocks_) {
-		for (WorldTransform* worldTransformBlock : worldTransformBlockLine) {
-
-			// worldTransformBlockがnullptrだったらスキップ
-			if (!worldTransformBlock) {
-				continue;
-			}
-
-			// ワールド行列の更新
-			WorldTransformUpdate(*worldTransformBlock);
-		}
-	}
-
-	//==================================================
-	// 　　　　　　　　　　　プレイヤー
-	//==================================================
-
-	// プレイヤーの更新
-	player_->Update();
 }
 
 /// <summary>

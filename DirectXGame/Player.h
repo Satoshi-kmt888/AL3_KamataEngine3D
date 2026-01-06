@@ -35,7 +35,6 @@ public:
 	void Draw();
 
 private:
-
 	/// <summary>
 	/// 旋回
 	/// </summary>
@@ -45,6 +44,9 @@ private:
 	/// 移動
 	/// </summary>
 	void Move();
+
+public:
+	KamataEngine::WorldTransform& GetWorldTransform() { return worldTransform_; }
 
 private:
 	//==================================================

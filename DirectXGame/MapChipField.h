@@ -21,18 +21,6 @@ struct MapChipData {
 /// </summary>
 class MapChipField {
 
-private:
-	// 1ブロックのサイズ
-	static inline const float kBlockWidth = 2.0f;
-	static inline const float kBlockHeight = 2.0f;
-
-	// ブロックの個数
-	static inline const uint32_t kNumBlockHorizontal = 100;
-	static inline const uint32_t kNumBlockVirtical = 20;
-
-	// マップチップデータ
-	MapChipData mapChipData_;
-
 public:
 	// 要素数の取得
 	uint32_t GetNumBlockHorizontal() { return kNumBlockHorizontal; }
@@ -65,4 +53,16 @@ public:
 	/// <param name="yIndex">縦のインデックス</param>
 	/// <returns></returns>
 	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+private:
+	// 1ブロックのサイズ
+	static inline const float kBlockWidth = 2.0f;
+	static inline const float kBlockHeight = 2.0f;
+
+	// ブロックの個数
+	static inline const uint32_t kNumBlockHorizontal = 100;
+	static inline const uint32_t kNumBlockVirtical = 20;
+
+	// マップチップデータ
+	MapChipData mapChipData_;
 };
