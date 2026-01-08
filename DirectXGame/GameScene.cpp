@@ -138,6 +138,9 @@ void GameScene::Initialize() {
 	// 初期化
 	cameraController_->Initialize(&camera_);
 
+	// カメラの移動範囲をセット
+	cameraController_->SetMovableArea({18.0f, 180.0f, 9.0f, 40.0f});
+
 	// 追従対象をセット
 	cameraController_->SetTarget(player_);
 

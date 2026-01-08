@@ -14,6 +14,7 @@ using namespace KamataEngine;
 /// </summary>
 void CameraController::Initialize(Camera* camera) {
 
+	// 引数のデータを記録
 	camera_ = camera;
 
 	// カメラの初期化
@@ -57,7 +58,7 @@ void CameraController::Update() {
 
 	// 移動範囲制限
 	camera_->translation_.x = std::clamp(camera_->translation_.x, movableArea_.left, movableArea_.right);
-	camera_->translation_.y = std::clamp(camera_->translation_.y, movableArea_.top, movableArea_.bottom);
+	camera_->translation_.y = std::clamp(camera_->translation_.y, movableArea_.bottom, movableArea_.top);
 
 	// 行列を更新する
 	camera_->UpdateMatrix();
