@@ -1,4 +1,7 @@
+#define NOMINMAX
+
 #include <algorithm>
+#include <numbers>
 
 #include "CameraController.h"
 #include "Lerp.h"
@@ -30,15 +33,27 @@ void CameraController::Update() {
 	// 追従対象のワールドトランスフォームを参照
 	const WorldTransform& targetWorldTransform = target_->GetWorldTransform();
 
-	// 追従対象とオフセットからカメラの目標座標を計算
-	targetCoord_.x = targetWorldTransform.translation_.x + targetOffset_.x;
-	targetCoord_.y = targetWorldTransform.translation_.y + targetOffset_.y;
-	targetCoord_.z = targetWorldTransform.translation_.z + targetOffset_.z;
+	// 追従対象の速度を取得
+	targetVelocity_ = target_->GetVelocity();
+
+	// 追従対象とオフセットと追従対象の速度からカメラの目標座標を計算
+	targetCoord_.x = targetWorldTransform.translation_.x + targetOffset_.x + targetVelocity_.x * kVelocityBias;
+	targetCoord_.y = targetWorldTransform.translation_.y + targetOffset_.y + targetVelocity_.y * kVelocityBias;
+	targetCoord_.z = targetWorldTransform.translation_.z + targetOffset_.z + targetVelocity_.z * kVelocityBias;
 
 	// 座標補間によりゆったり追従
 	camera_->translation_.x = Lerp(targetCoord_.x, camera_->translation_.x, kInterpolationRate);
 	camera_->translation_.y = Lerp(targetCoord_.y, camera_->translation_.y, kInterpolationRate);
 	camera_->translation_.z = Lerp(targetCoord_.z, camera_->translation_.z, kInterpolationRate);
+
+	// 追従対象の座標を取得
+	targetTranslation_ = target_->GetTranslation();
+
+	// 追従対象が画面外に出ないよう補正
+	camera_->translation_.x = std::max(camera_->translation_.x, targetTranslation_.x + margin_.left);
+	camera_->translation_.x = std::min(camera_->translation_.x, targetTranslation_.x + margin_.right);
+	camera_->translation_.y = std::max(camera_->translation_.y, targetTranslation_.y + margin_.bottom);
+	camera_->translation_.y = std::min(camera_->translation_.y, targetTranslation_.y + margin_.top);
 
 	// 移動範囲制限
 	camera_->translation_.x = std::clamp(camera_->translation_.x, movableArea_.left, movableArea_.right);

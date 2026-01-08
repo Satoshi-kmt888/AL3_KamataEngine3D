@@ -203,7 +203,7 @@ void GameScene::Update() {
 	//==================================================
 	// 　　　　　　　　　　　　カメラ
 	//==================================================
-	
+
 #ifdef _DEBUG
 
 	if (Input::GetInstance()->TriggerKey(DIK_SPACE)) {

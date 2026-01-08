@@ -2,11 +2,11 @@
 
 #include <vector>
 
+#include "CameraController.h"
 #include "KamataEngine.h"
 #include "MapChipField.h"
 #include "Player.h"
 #include "Skydome.h"
-#include "CameraController.h"
 
 /// <summary>
 /// ゲームシーン
@@ -21,7 +21,6 @@ public:
 	~GameScene();
 
 private:
-
 	//==================================================
 	// 　　　　　　　　　　　　天球
 	//==================================================

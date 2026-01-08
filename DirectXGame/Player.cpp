@@ -1,8 +1,8 @@
+#define NOMINMAX
+
 #include <algorithm>
 #include <cassert>
 #include <numbers>
-
-#define NOMINMAX
 
 #include "Easing.h"
 #include "Lerp.h"
@@ -35,10 +35,10 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera, co
 /// </summary>
 void Player::Update() {
 
-	//旋回
+	// 旋回
 	Turn();
 
-	//移動
+	// 移動
 	Move();
 
 	// ワールド行列を定数バッファに転送
@@ -200,5 +200,4 @@ void Player::Move() {
 			onGround_ = true;
 		}
 	}
-
 }

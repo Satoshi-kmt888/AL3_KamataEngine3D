@@ -47,6 +47,8 @@ private:
 
 public:
 	KamataEngine::WorldTransform& GetWorldTransform() { return worldTransform_; }
+	KamataEngine::Vector3& GetVelocity() { return velocity_; }
+	KamataEngine::Vector3& GetTranslation() { return worldTransform_.translation_; }
 
 private:
 	//==================================================
@@ -69,7 +71,7 @@ private:
 	// 速度減衰率
 	static inline const float kAttenuation = 0.05f;
 
-	// 速度の助言
+	// 速度の上限
 	static inline const float kLimitRunSpeed = 5.0f;
 
 	// 重力加速度
