@@ -4,14 +4,8 @@
 
 using namespace KamataEngine;
 
-/// <summary>
-/// コンストラクタ
-/// </summary>
 GameScene::GameScene() {}
 
-/// <summary>
-/// デストラクタ
-/// </summary>
 GameScene::~GameScene() {
 
 	/*
@@ -65,9 +59,6 @@ GameScene::~GameScene() {
 	delete modelPlayer_;
 }
 
-/// <summary>
-/// 初期化
-/// </summary>
 void GameScene::Initialize() {
 
 	//==================================================
@@ -87,6 +78,16 @@ void GameScene::Initialize() {
 	skydome_->Initialize(modelSkydome_, textureHandleSkydome_, &camera_);
 
 	//==================================================
+	// 　　　　　　　　　　　ブロック
+	//==================================================
+
+	// テクスチャハンドル
+	textureHandleWoodBox_ = TextureManager::Load("./Resources/woodBox/woodBox.png");
+
+	// 3Dモデルデータの生成
+	modelBlock_ = Model::CreateFromOBJ("woodBox", true);
+
+	//==================================================
 	// 　　　　　　　　　　　マップチップ
 	//==================================================
 
@@ -100,33 +101,22 @@ void GameScene::Initialize() {
 	GenerateBlocks();
 
 	//==================================================
-	// 　　　　　　　　　　　ブロック
-	//==================================================
-
-	// テクスチャハンドル
-	textureHandleWoodBox_ = TextureManager::Load("./Resources/woodBox/woodBox.png");
-
-	// 3Dモデルデータの生成
-	modelBlock_ = Model::CreateFromOBJ("woodBox", true);
-
-	//==================================================
 	// 　　　　　　　　　　　プレイヤー
 	//==================================================
 
 	// プレイヤーの生成
 	player_ = new Player();
 
-	// 座標をマップチップ番号で指定
+	//初期化値の代入
+	modelPlayer_ = Model::CreateFromOBJ("player", true);
+	textureHandlePlayer_ = TextureManager::Load("./Resources/player/player.png");
 	Vector3 playerPosition = mapChipField_->GetMapChipPositionByIndex(1, 18);
 
-	// ファイル名を指定してテクスチャを読み込む
-	textureHandlePlayer_ = TextureManager::Load("./Resources/player/player.png");
-
-	// 3Dモデルデータの生成
-	modelPlayer_ = Model::CreateFromOBJ("player", true);
-
-	// プレイヤーの初期化
+	//初期化
 	player_->Initialize(modelPlayer_, textureHandlePlayer_, &camera_, playerPosition);
+
+	//マップチップフィールドをセット
+	player_->SetMapChipField(mapChipField_);
 
 	//==================================================
 	// 　　　　　　　　　　カメラコントローラ
@@ -159,9 +149,6 @@ void GameScene::Initialize() {
 	debugCamera_ = new DebugCamera(1280, 720);
 }
 
-/// <summary>
-/// 更新
-/// </summary>
 void GameScene::Update() {
 
 	//==================================================
@@ -244,9 +231,6 @@ void GameScene::Update() {
 	}
 }
 
-/// <summary>
-/// 描画
-/// </summary>
 void GameScene::Draw() {
 
 	// 3Dモデル描画前処理
@@ -288,9 +272,6 @@ void GameScene::Draw() {
 	Model::PostDraw();
 }
 
-/// <summary>
-/// 　表示ブロックの生成
-/// </summary>
 void GameScene::GenerateBlocks() {
 
 	// 要素数

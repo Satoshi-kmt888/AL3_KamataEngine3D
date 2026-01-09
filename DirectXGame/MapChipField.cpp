@@ -6,20 +6,14 @@
 
 using namespace KamataEngine;
 
-/// <summary>
-/// マップチップテーブル
-/// </summary>
 namespace {
 std::map<std::string, MapChipType> mapChipTable = {
 
-    {"0", MapChipType::kBlank},
-    {"1", MapChipType::kBlock},
+    {"0", MapChipType::kBlank}, //  空白
+    {"1", MapChipType::kBlock}, //  ブロック
 };
 }
 
-/// <summary>
-/// マップチップデータのリセット
-/// </summary>
 void MapChipField::ResetMapChipData() {
 
 	// マップチップデータをリセット
@@ -30,10 +24,6 @@ void MapChipField::ResetMapChipData() {
 	}
 }
 
-/// <summary>
-/// マップの読み込み
-/// </summary>
-/// <param name="filePath"></param>
 void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 
 	// マップチップデータをリセット
@@ -72,12 +62,6 @@ void MapChipField::LoadMapChipCsv(const std::string& filePath) {
 	}
 }
 
-/// <summary>
-/// マップチップの種別を取得
-/// </summary>
-/// <param name="xIndex">横のインデックス</param>
-/// <param name="yIndex">縦のインデックス</param>
-/// <returns></returns>
 MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex) {
 
 	if (xIndex < 0 || kNumBlockHorizontal - 1 < xIndex) {
@@ -91,10 +75,4 @@ MapChipType MapChipField::GetMapChipTypeByIndex(uint32_t xIndex, uint32_t yIndex
 	return mapChipData_.data[yIndex][xIndex];
 }
 
-/// <summary>
-/// マップチップの座標を取得
-/// </summary>
-/// <param name="xIndex">横のインデックス</param>
-/// <param name="yIndex">縦のインデックス</param>
-/// <returns></returns>
 Vector3 MapChipField::GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex) { return Vector3(kBlockWidth * xIndex, kBlockHeight * (kNumBlockVirtical - 1 - yIndex), 0); }

@@ -9,9 +9,6 @@
 
 using namespace KamataEngine;
 
-/// <summary>
-/// 初期化
-/// </summary>
 void CameraController::Initialize(Camera* camera) {
 
 	// 引数のデータを記録
@@ -20,15 +17,13 @@ void CameraController::Initialize(Camera* camera) {
 	// カメラの初期化
 	camera_->Initialize();
 
+	//カメラの移動範囲
 	movableArea_.left = 0.0f;
 	movableArea_.right = 100.0f;
 	movableArea_.top = 0.0f;
 	movableArea_.bottom = 100.0f;
 }
 
-/// <summary>
-/// 更新
-/// </summary>
 void CameraController::Update() {
 
 	// 追従対象のワールドトランスフォームを参照
@@ -64,9 +59,6 @@ void CameraController::Update() {
 	camera_->UpdateMatrix();
 }
 
-/// <summary>
-/// リセット
-/// </summary>
 void CameraController::Reset() {
 
 	// 追従対象のワールドトランスフォームを参照

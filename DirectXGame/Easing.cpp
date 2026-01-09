@@ -2,39 +2,21 @@
 #include "Lerp.h"
 #include <math.h>
 
-/// <summary>
-/// イージング
-/// </summary>
-/// <param name="t">0.0f~1.0fで変化するΔt</param>
-/// <param name="easingType">イージングの種類</param>
-/// <returns>イージングされたΔtの値</returns>
-float Easing(float t, EasingType easingType) {
+float Easing(float t, EaseType easeType) {
 
-	switch (easingType) {
+	switch (easeType) {
 
-	case EasingType::kEASE_IN:
-
-		/*
-		イーズイン
-		--------------------*/
+	case EaseType::EASE_IN:
 
 		// イージングタイムを計算
 		return t * t;
 
-	case EasingType::kEASE_OUT:
-
-		/*
-		イーズアウト
-		--------------------*/
+	case EaseType::EASE_OUT:
 
 		// イージングタイムを計算
 		return 1.0f - (1.0f - t) * (1.0f - t);
 
-	case EasingType::kEASE_IN_OUT:
-
-		/*
-		イーズインアウト
-		--------------------*/
+	case EaseType::EASE_IN_OUT:
 
 		if (t < 0.5f) {
 
@@ -47,11 +29,7 @@ float Easing(float t, EasingType easingType) {
 			return 1.0f - powf(-2.0f * t + 2.0f, 2.0f) / 2.0f;
 		}
 
-	case EasingType::kEASE_IN_BACK: {
-
-		/*
-		イーズインバック
-		--------------------*/
+	case EaseType::EASE_IN_BACK: {
 
 		// 定数を宣言
 		const float c1 = 1.70158f;
@@ -61,11 +39,7 @@ float Easing(float t, EasingType easingType) {
 		return c3 * powf(t, 3.0f) - c1 * powf(t, 2.0f);
 	}
 
-	case EasingType::kEASE_OUT_BACK: {
-
-		/*
-		イーズアウトバック
-		--------------------*/
+	case EaseType::EASE_OUT_BACK: {
 
 		// 定数を宣言
 		const float c1 = 1.70158f;

@@ -10,10 +10,8 @@
 #include "WorldTransformUpdate.h"
 
 using namespace KamataEngine;
+//using namespace MathUtility;
 
-/// <summary>
-/// 初期化
-/// </summary>
 void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera, const Vector3& position) {
 
 	// NULLポインタチェック
@@ -30,9 +28,6 @@ void Player::Initialize(Model* model, uint32_t textureHandle, Camera* camera, co
 	worldTransform_.Initialize();
 }
 
-/// <summary>
-/// 更新
-/// </summary>
 void Player::Update() {
 
 	// 旋回
@@ -45,18 +40,12 @@ void Player::Update() {
 	WorldTransformUpdate(worldTransform_);
 }
 
-/// <summary>
-/// 描画
-/// </summary>
 void Player::Draw() {
 
 	// 3Dモデルを描画
 	model_->Draw(worldTransform_, *camera_, textureHandle_);
 }
 
-/// <summary>
-/// 旋回
-/// </summary>
 void Player::Turn() {
 
 	// 旋回制御
@@ -71,17 +60,18 @@ void Player::Turn() {
 		float destinationRotationY = destinationRotationYTable[static_cast<uint32_t>(lrDirection_)];
 
 		// プレイヤーの角度を設定する
-		worldTransform_.rotation_.y = Lerp(turnFirstRotationY_, destinationRotationY, Easing(turnTimer_, EasingType::kEASE_IN_OUT));
+		worldTransform_.rotation_.y = Lerp(turnFirstRotationY_, destinationRotationY, Easing(turnTimer_, EaseType::EASE_IN_OUT));
 	}
 }
 
-/// <summary>
-/// 移動
-/// </summary>
 void Player::Move() {
 
 	// 接地状態
 	if (onGround_) {
+
+		//==================================================
+		//
+		//==================================================
 
 		// 左右移動入力
 		if (Input::GetInstance()->PushKey(DIK_RIGHT) || Input::GetInstance()->PushKey(DIK_LEFT)) {
@@ -146,6 +136,15 @@ void Player::Move() {
 			velocity_.x *= (1.0f - kAttenuation);
 		}
 
+		// 衝突情報を初期化
+		CollisionMapInfo collisionMapInfo;
+
+		// 移動量に速度の値をコピー
+		collisionMapInfo.moveAmount = velocity_;
+
+		// マップ衝突チェック
+		CollisionMap(collisionMapInfo);
+
 		if (Input::GetInstance()->PushKey(DIK_UP)) {
 
 			// ジャンプ初速
@@ -200,4 +199,26 @@ void Player::Move() {
 			onGround_ = true;
 		}
 	}
+}
+
+void Player::CollisionMap(CollisionMapInfo& info) {}
+
+void Player::CollisionMapTop(CollisionMapInfo& info) {}
+
+KamataEngine::Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
+
+	Vector3 result{};
+
+	Vector3 offsetTable[kNumCorner] = {
+	    {-kWidth / 2.0f, kHeight / 2.0f,  0.0f}, // LEFT_TOP
+	    {kWidth / 2.0f,  kHeight / 2.0f,  0.0f}, // RIGHT_TOP
+	    {-kWidth / 2.0f, -kHeight / 2.0f, 0.0f}, // LEFT_BOTTOM
+	    {kWidth / 2.0f,  -kHeight / 2.0f, 0.0f}  // RIGHT_BOTTOM
+	};
+
+	result.x = center.x + offsetTable[static_cast<uint32_t>(corner)].x;
+	result.y = center.y + offsetTable[static_cast<uint32_t>(corner)].y;
+	result.z = center.z + offsetTable[static_cast<uint32_t>(corner)].z;
+
+	return result;
 }

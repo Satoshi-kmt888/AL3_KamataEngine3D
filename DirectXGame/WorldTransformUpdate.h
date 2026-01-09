@@ -2,5 +2,8 @@
 
 #include "KamataEngine.h"
 
-// ワールド行列更新
+/// <summary>
+/// ワールド行列更新
+/// </summary>
+/// <param name="worldTransform">ワールド変換データ</param>
 void WorldTransformUpdate(KamataEngine::WorldTransform& worldTransform);

@@ -3,13 +3,36 @@
 #include "KamataEngine.h"
 
 /// <summary>
-/// 左右
+/// マップ衝突判定フラグ
+/// </summary>
+struct CollisionMapInfo {
+	bool isCollisionCeiling = false;
+	bool isLanding = false;
+	bool isContactWall = false;
+	KamataEngine::Vector3 moveAmount;
+};
+
+/// <summary>
+/// 角
+/// </summary>
+enum Corner {
+	LEFT_TOP,
+	RIGHT_TOP,
+	LEFT_BOTTOM,
+	RIGHT_BOTTOM,
+
+	kNumCorner
+};
+
+/// <summary>
+/// 左右の向き
 /// </summary>
 enum class LRDirection {
 	kRight,
 	kLeft,
 };
 
+class MapChipField;
 /// <summary>
 /// プレイヤー
 /// </summary>
@@ -45,12 +68,37 @@ private:
 	/// </summary>
 	void Move();
 
+	/// <summary>
+	/// マップ衝突判定
+	/// </summary>
+	/// <param name="info"></param>
+	void CollisionMap(CollisionMapInfo& info);
+
+	void CollisionMapLeft(CollisionMapInfo& info);
+	void CollisionMapRIght(CollisionMapInfo& info);
+	void CollisionMapTop(CollisionMapInfo& info);
+	void CollisionMapDown(CollisionMapInfo& info);
+
+	/// <summary>
+	/// 指定した角の座標を取得する
+	/// </summary>
+	/// <param name="center"></param>
+	/// <param name="corner"></param>
+	/// <returns></returns>
+	KamataEngine::Vector3 CornerPosition(const Vector3& center, Corner corner);
+
 public:
 	KamataEngine::WorldTransform& GetWorldTransform() { return worldTransform_; }
 	KamataEngine::Vector3& GetVelocity() { return velocity_; }
 	KamataEngine::Vector3& GetTranslation() { return worldTransform_.translation_; }
 
+	void SetMapChipField(MapChipField* mapChipField) { mapChipField_ = mapChipField; }
+
 private:
+	// 当たり判定サイズ
+	static inline const float kWidth = 0.8f;
+	static inline const float kHeight = 0.8f;
+
 	//==================================================
 	//                 拡縮・回転・移動
 	//==================================================
@@ -59,11 +107,25 @@ private:
 	KamataEngine::WorldTransform worldTransform_;
 
 	/*
-	定数
+	拡縮
+	--------------------*/
+
+	/*
+	回転
 	--------------------*/
 
 	// 旋回時間<秒>
 	static inline const float kTimeTurn = 0.8f;
+
+	// 旋回開始時の角度
+	float turnFirstRotationY_ = 0.0f;
+
+	// 旋回タイマー
+	float turnTimer_ = 0.0f;
+
+	/*
+	移動
+	--------------------*/
 
 	// 加速度
 	static inline const float kAcceleration = 0.01f;
@@ -83,24 +145,6 @@ private:
 	// ジャンプ初速
 	static inline const float kJumpAcceleration = 1.0f;
 
-	/*
-	拡縮
-	--------------------*/
-
-	/*
-	回転
-	--------------------*/
-
-	// 旋回開始時の角度
-	float turnFirstRotationY_ = 0.0f;
-
-	// 旋回タイマー
-	float turnTimer_ = 0.0f;
-
-	/*
-	移動
-	--------------------*/
-
 	// 速度
 	KamataEngine::Vector3 velocity_ = {};
 
@@ -113,6 +157,9 @@ private:
 
 	// 接地状態フラグ
 	bool onGround_ = true;
+
+	// マップチップによるフィールド
+	MapChipField* mapChipField_ = nullptr;
 
 	//==================================================
 	//                      描画

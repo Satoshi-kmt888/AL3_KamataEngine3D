@@ -23,6 +23,7 @@ public:
 	/// <summary>
 	/// 初期化
 	/// </summary>
+	/// <param name="camera">カメラ</param>
 	void Initialize(KamataEngine::Camera* camera);
 
 	/// <summary>
@@ -36,7 +37,11 @@ public:
 	void Reset();
 
 public:
+
+	//追従対象
 	void SetTarget(Player* target) { target_ = target; }
+
+	//カメラの範囲
 	void SetMovableArea(Rect area) { movableArea_ = area; }
 
 private:

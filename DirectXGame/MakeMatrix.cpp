@@ -8,12 +8,6 @@ using namespace KamataEngine;
 // 　　　　　　　　　　　行列の計算
 //==================================================
 
-/// <summary>
-/// 行列の積
-/// </summary>
-/// <param name="matrix1">行列1</param>
-/// <param name="matrix2">行列2</param>
-/// <returns></returns>
 Matrix4x4 MatrixMultiply(const Matrix4x4& matrix1, const Matrix4x4& matrix2) {
 
 	// 計算結果
@@ -36,11 +30,6 @@ Matrix4x4 MatrixMultiply(const Matrix4x4& matrix1, const Matrix4x4& matrix2) {
 // 　　　　　　　　　　　SRT行列
 //==================================================
 
-/// <summary>
-/// 拡縮行列の作成
-/// </summary>
-/// <param name="scale">拡縮係数</param>
-/// <returns></returns>
 Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
 
 	// 計算結果
@@ -73,11 +62,6 @@ Matrix4x4 MakeScaleMatrix(const Vector3& scale) {
 	return result;
 }
 
-/// <summary>
-/// X軸周りの回転行列
-/// </summary>
-/// <param name="radian"></param>
-/// <returns></returns>
 Matrix4x4 MakeRotateXMatrix(float radian) {
 
 	// 計算結果
@@ -110,11 +94,6 @@ Matrix4x4 MakeRotateXMatrix(float radian) {
 	return result;
 }
 
-/// <summary>
-/// Y軸周りの回転
-/// </summary>
-/// <param name="radian">回転角</param>
-/// <returns></returns>
 Matrix4x4 MakeRotateYMatrix(float radian) {
 
 	// 計算結果
@@ -147,11 +126,6 @@ Matrix4x4 MakeRotateYMatrix(float radian) {
 	return result;
 }
 
-/// <summary>
-/// Z軸周りの回転
-/// </summary>
-/// <param name="radian">回転角</param>
-/// <returns></returns>
 Matrix4x4 MakeRotateZMatrix(float radian) {
 
 	// 計算結果
@@ -184,11 +158,6 @@ Matrix4x4 MakeRotateZMatrix(float radian) {
 	return result;
 }
 
-/// <summary>
-/// 平行移動行列
-/// </summary>
-/// <param name="translate">平行移動させる座標</param>
-/// <returns></returns>
 Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 
 	// 計算結果
@@ -221,13 +190,6 @@ Matrix4x4 MakeTranslateMatrix(const Vector3& translate) {
 	return result;
 }
 
-/// <summary>
-/// アフィン変換行列
-/// </summary>
-/// <param name="scale">拡縮係数</param>
-/// <param name="rotate">回転角</param>
-/// <param name="translate">平行移動する座標</param>
-/// <returns></returns>
 Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Vector3& translate) {
 
 	// 計算結果
@@ -256,11 +218,6 @@ Matrix4x4 MakeAffineMatrix(const Vector3& scale, const Vector3& rotate, const Ve
 // 　　　　　　　　　　カメラの行列
 //==================================================
 
-/// <summary>
-/// 逆行列
-/// </summary>
-/// <param name="m">行列</param>
-/// <returns></returns>
 Matrix4x4 MakeInverseMatrix(const Matrix4x4& m) {
 
 	// 計算結果
@@ -370,14 +327,6 @@ Matrix4x4 MakeInverseMatrix(const Matrix4x4& m) {
 	return result;
 }
 
-/// <summary>
-/// 透視投影行列
-/// </summary>
-/// <param name="fovY">画角Y</param>
-/// <param name="aspectRatio">アスペクト比</param>
-/// <param name="nearClip">近平面への距離</param>
-/// <param name="farClip">遠平面への距離</param>
-/// <returns></returns>
 Matrix4x4 MakePerspectiveFovMatrix(float fovY, float aspectRatio, float nearClip, float farClip) {
 
 	// 計算結果

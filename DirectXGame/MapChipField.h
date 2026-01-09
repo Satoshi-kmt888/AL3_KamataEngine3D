@@ -7,7 +7,10 @@
 /// <summary>
 /// マップチップの種類
 /// </summary>
-enum class MapChipType { kBlank, kBlock };
+enum class MapChipType {
+	kBlank,
+	kBlock,
+};
 
 /// <summary>
 /// マップチップデータ
@@ -20,11 +23,6 @@ struct MapChipData {
 /// マップチップフィールド
 /// </summary>
 class MapChipField {
-
-public:
-	// 要素数の取得
-	uint32_t GetNumBlockHorizontal() { return kNumBlockHorizontal; }
-	uint32_t GetNumBlockVirtical() { return kNumBlockVirtical; }
 
 public:
 	/// <summary>
@@ -53,6 +51,11 @@ public:
 	/// <param name="yIndex">縦のインデックス</param>
 	/// <returns></returns>
 	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+public:
+	// 要素数の取得
+	uint32_t GetNumBlockHorizontal() { return kNumBlockHorizontal; }
+	uint32_t GetNumBlockVirtical() { return kNumBlockVirtical; }
 
 private:
 	// 1ブロックのサイズ
