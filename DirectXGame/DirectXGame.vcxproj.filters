@@ -17,16 +17,16 @@
       <UniqueIdentifier>{718c7f4c-fc51-40ad-a221-b9456a7a1a3c}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\Math">
-      <UniqueIdentifier>{dd33d103-6de7-4a01-b43e-8a88a5df0101}</UniqueIdentifier>
+      <UniqueIdentifier>{9b614911-2858-4d2a-82c0-c3a51da0cfa7}</UniqueIdentifier>
     </Filter>
     <Filter Include="ソース ファイル\World">
-      <UniqueIdentifier>{14f44875-7567-4bb5-9364-d4c38b8a6b0c}</UniqueIdentifier>
+      <UniqueIdentifier>{56c0535b-6271-4387-958a-01c1d3b2aa86}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\Math">
-      <UniqueIdentifier>{8dd40090-9529-430d-bdd2-3ae8a1a2b7f3}</UniqueIdentifier>
+      <UniqueIdentifier>{d2c523de-3883-4e67-8e43-76c349e3913d}</UniqueIdentifier>
     </Filter>
     <Filter Include="ヘッダー ファイル\World">
-      <UniqueIdentifier>{1a4990ba-ed91-42ac-9aa7-be1e470d7737}</UniqueIdentifier>
+      <UniqueIdentifier>{d270bde1-b513-4e71-8c37-8500b78411ed}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -42,6 +42,9 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>ソース ファイル</Filter>
     </ClCompile>
+    <ClCompile Include="Easing.cpp">
+      <Filter>ソース ファイル\Math</Filter>
+    </ClCompile>
     <ClCompile Include="Lerp.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
@@ -51,13 +54,10 @@
     <ClCompile Include="WorldTransformUpdate.cpp">
       <Filter>ソース ファイル\Math</Filter>
     </ClCompile>
-    <ClCompile Include="Easing.cpp">
-      <Filter>ソース ファイル\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="Skydome.cpp">
+    <ClCompile Include="MapChipField.cpp">
       <Filter>ソース ファイル\World</Filter>
     </ClCompile>
-    <ClCompile Include="MapChipField.cpp">
+    <ClCompile Include="Skydome.cpp">
       <Filter>ソース ファイル\World</Filter>
     </ClCompile>
   </ItemGroup>
@@ -132,10 +132,10 @@
     <ClInclude Include="WorldTransformUpdate.h">
       <Filter>ヘッダー ファイル\Math</Filter>
     </ClInclude>
-    <ClInclude Include="Skydome.h">
+    <ClInclude Include="MapChipField.h">
       <Filter>ヘッダー ファイル\World</Filter>
     </ClInclude>
-    <ClInclude Include="MapChipField.h">
+    <ClInclude Include="Skydome.h">
       <Filter>ヘッダー ファイル\World</Filter>
     </ClInclude>
   </ItemGroup>

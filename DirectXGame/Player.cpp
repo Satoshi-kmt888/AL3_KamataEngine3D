@@ -8,6 +8,7 @@
 #include "Lerp.h"
 #include "Player.h"
 #include "WorldTransformUpdate.h"
+#include "MapChipField.h"
 
 using namespace KamataEngine;
 //using namespace MathUtility;
@@ -203,7 +204,48 @@ void Player::Move() {
 
 void Player::CollisionMap(CollisionMapInfo& info) {}
 
-void Player::CollisionMapTop(CollisionMapInfo& info) {}
+void Player::CollisionMapTop(CollisionMapInfo& info) {
+
+	//上昇しているか？
+	if (info.moveAmount.y <= 0.0f) {
+		return;
+	}
+
+	//移動後の4つの角の座標
+	std::array<Vector3, kNumCorner> positionsNew;
+
+	for (uint32_t i = 0; i < positionsNew.size(); ++i) {
+
+		positionsNew[i].x = worldTransform_.translation_.x + info.moveAmount.x;
+		positionsNew[i].y = worldTransform_.translation_.y + info.moveAmount.y;
+		positionsNew[i].z = worldTransform_.translation_.z + info.moveAmount.z;
+
+		positionsNew[i] = CornerPosition(positionsNew[i], static_cast<Corner>(i));
+
+		MapChipType mapChipType;
+
+		//真上の当たり判定を行う
+		bool hit = false;
+
+		//左上点の判定
+		IndexSet indexSet;
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[LEFT_TOP]);
+		mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+
+		if (mapChipType == MapChipType::kBlock) {
+			hit = true;
+		}
+
+		//右上点の判定
+		IndexSet indexSet;
+		indexSet = mapChipField_->GetMapChipIndexSetByPosition(positionsNew[RIGHT_TOP]);
+		mapChipType = mapChipField_->GetMapChipTypeByIndex(indexSet.xIndex, indexSet.yIndex);
+
+		if (mapChipType == MapChipType::kBlock) {
+			hit = true;
+		}
+	}
+}
 
 KamataEngine::Vector3 Player::CornerPosition(const Vector3& center, Corner corner) {
 

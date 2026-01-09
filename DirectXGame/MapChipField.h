@@ -20,6 +20,14 @@ struct MapChipData {
 };
 
 /// <summary>
+/// インデックス
+/// </summary>
+struct IndexSet {
+	uint32_t xIndex;
+	uint32_t yIndex;
+};
+
+/// <summary>
 /// マップチップフィールド
 /// </summary>
 class MapChipField {
@@ -51,6 +59,13 @@ public:
 	/// <param name="yIndex">縦のインデックス</param>
 	/// <returns></returns>
 	KamataEngine::Vector3 GetMapChipPositionByIndex(uint32_t xIndex, uint32_t yIndex);
+
+	/// <summary>
+	/// 座標からマップチップ座標を取得
+	/// </summary>
+	/// <param name="position"></param>
+	/// <returns></returns>
+	IndexSet GetMapChipIndexSetByPosition(const Vector3& position);
 
 public:
 	// 要素数の取得
